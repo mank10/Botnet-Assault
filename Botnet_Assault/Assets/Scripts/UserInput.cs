@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class UserInput : MonoBehaviour
 {
-
     private Camera mainCamera;
 
     // Start is called before the first frame update
@@ -19,22 +18,20 @@ public class UserInput : MonoBehaviour
         if(Input.touchCount > 0)
         {
             Touch touchInput = Input.GetTouch(0);
-            Debug.Log("Touch Input");
+            //Debug.Log("Touch Input");
 
             Ray camRay = mainCamera.ScreenPointToRay(touchInput.position);
             RaycastHit hitInfo;
 
             if(Physics.Raycast(camRay, out hitInfo))
             {
-                if(hitInfo.transform.CompareTag("GoodPacket"))
+                if(hitInfo.transform.CompareTag("Virus"))
                 {
-                    //Do Something...
-                    Debug.Log("GoodPacket");
-                }
-                else if(hitInfo.transform.CompareTag("Virus"))
-                {
-                    //Do Something...
-                    Debug.Log("Virus");
+                    //Disable the virus packet and inform Client to disable itself and line connection.
+                    hitInfo.transform.parent.GetComponentInChildren<ClientComputer>().isDisabled = true;
+                    hitInfo.transform.gameObject.SetActive(false);
+                    GameUIScript.Instance.UpdateVirusTerminated();
+                    //Debug.Log("Virus touch");
                 }
             }
         }
