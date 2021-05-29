@@ -8,15 +8,25 @@ public class ServerScript : MonoBehaviour
     public int antivirusShield = 0;
 
     public GameObject shieldEffect;
+    private Renderer shieldRenderer;
 
     [SerializeField]private bool serverInvincible = false;
+
+    private void Start()
+    {
+        shieldRenderer = shieldEffect.transform.GetComponentInChildren<Renderer>();
+    }
 
     IEnumerator InvincibilityTimer()
     {
         shieldEffect.SetActive(true);
-        for(int i = 5; i > 0; i--)
+        yield return new WaitForSeconds(4);
+        for (int i = 5; i > 0; i--)
         {
-            yield return new WaitForSeconds(1);
+            shieldRenderer.enabled = false;
+            yield return new WaitForSeconds(0.1f);
+            shieldRenderer.enabled = true;
+            yield return new WaitForSeconds(0.1f);
         }
         antivirusShield = 0;
         serverInvincible = false;

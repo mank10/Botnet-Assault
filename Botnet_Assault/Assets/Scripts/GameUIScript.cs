@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameUIScript : MonoBehaviour
 {
@@ -13,9 +14,10 @@ public class GameUIScript : MonoBehaviour
     [SerializeField] private GameObject restartButton;
 
     private int goodPacketCount = 0;
-    private int virusTerminatedCount = 0;
+    public int virusTerminatedCount = 0;
 
     public bool isGameOver = false;
+    public bool isGameStarted = false;
 
     #region Singleton
     public static GameUIScript _Instance;
@@ -54,6 +56,11 @@ public class GameUIScript : MonoBehaviour
         serverHealthSlider.value -= 5;
     }
 
+    public void StartGame()
+    {
+        isGameStarted = true;
+    }
+
     public void GameOver()
     {
         gameOverText.gameObject.SetActive(true);
@@ -64,14 +71,6 @@ public class GameUIScript : MonoBehaviour
 
     public void RestartGame()
     {
-        restartButton.SetActive(false);
-        gameOverText.gameObject.SetActive(false);
-        goodPacketCount = 0;
-        virusTerminatedCount = 0;
-        serverHealthSlider.value = 100;
-        antivirusSlider.value = 0;
-        goodPktText.text = goodPacketCount.ToString();
-        virusTerminatedText.text = virusTerminatedCount.ToString();
-        isGameOver = false;
+        SceneManager.LoadScene(0);
     } 
 }
